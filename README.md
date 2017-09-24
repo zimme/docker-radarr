@@ -29,7 +29,7 @@ docker create \
 	-v <path to data>:/movies \
 	-v /etc/localtime:/etc/localtime:ro \
 	-e TZ=<timezone> \
-	-e PGID=<gid> -e PUID=<uid>  \
+	-e PGID=<gid> -e PUID=<uid> -e PGIDS="<GID> <GID>" \
 	-p 7878:7878 \
   linuxserver/radarr
 ```
@@ -48,8 +48,9 @@ http://192.168.x.x:8080 would show you what's running INSIDE the container on po
 * `-v /movies` - Movie Share
 * `-v /etc/localtime` for timesync - see [Localtime](#localtime) for important information
 * `-e TZ` for timezone information, Europe/London - see [Localtime](#localtime) for important information
-* `-e PGID` for for GroupID - see below for explanation
-* `-e PUID` for for UserID - see below for explanation
+* `-e PGID` for GroupID - see below for explanation
+* `-e PGIDS` for GroupIDs - see below for explanation
+* `-e PUID` for UserID - see below for explanation
 
 It is based on alpine linux with s6 overlay, for shell access whilst the container is running do `docker exec -it radarr /bin/bash`.
 
@@ -59,7 +60,7 @@ It is important that you either set `-v /etc/localtime:/etc/localtime:ro` or the
 
 ### User / Group Identifiers
 
-Sometimes when using data volumes (`-v` flags) permissions issues can arise between the host OS and the container. We avoid this issue by allowing you to specify the user `PUID` and group `PGID`. Ensure the data volume directory on the host is owned by the same user you specify and it will "just work" ™.
+Sometimes when using data volumes (`-v` flags) permissions issues can arise between the host OS and the container. We avoid this issue by allowing you to specify the user `PUID`, group `PGID` and groups `PGIDS`. Ensure the data volume directory on the host is owned by the same user you specify and it will "just work" ™.
 
 In this instance `PUID=1001` and `PGID=1001`. To find yours use `id user` as below:
 
